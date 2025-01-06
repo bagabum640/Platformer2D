@@ -11,6 +11,6 @@ public class EnemyState
 
     public virtual void Enter() { }
     public virtual void Exit() { }
-    public virtual void UpdateState() { }
-    public virtual void UpdatePhysicState() { }  
+    public virtual void Update() { }
+    public virtual void PhysicUpdate() { }  
 }

@@ -1,10 +1,10 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
-using static AnimationsData;
 
 public class Health
 {
-    private readonly Animator _animator;
+    private readonly List<IHealthObserver> _observers = new();
     private readonly int _maxAmount;
     private readonly int _minAmount = 0;
 
@@ -14,11 +14,12 @@ public class Health
 
     public event Action Died;
 
-    public Health(Animator animator,int maxHealthAmount)
+    public Health(int maxHealthAmount, Animator animator)
     {
-        _animator = animator;
         _maxAmount = maxHealthAmount;
         _currentAmount = _maxAmount;
+
+        AddObserver(new HealthAnimationController(animator));
     }
 
     public void TakeDamage(int damage)
@@ -32,12 +33,9 @@ public class Health
         {
             IsAlive = false;
             Died?.Invoke();
-            _animator.SetTrigger(Death);
         }
-        else
-        {
-            _animator.SetTrigger(Hurt);
-        }
+
+        NotifyObservers();
     }
 
     public void RestoreHealth(int healthAmount) =>
@@ -45,4 +43,18 @@ public class Health
 
     public bool GetPossibleOfHealing() =>
         _currentAmount < _maxAmount;
+
+    public void AddObserver(IHealthObserver observer) =>
+        _observers.Add(observer);
+
+    public void RemoveObserver(IHealthObserver observer) =>
+        _observers.Remove(observer);
+
+    private void NotifyObservers()
+    {
+        foreach (var observer in _observers)
+        {
+            observer.OnHealthChanged(_currentAmount);
+        }
+    }
 }

@@ -15,7 +15,7 @@ public class ChaseState : EnemyState
     public override void Exit() =>
         _enemyMovement.ResetSpeed();
 
-    public override void UpdatePhysicState()
+    public override void PhysicUpdate()
     {
         if (Enemy.IsAggroed == false)
             StateChanger.SetState<PatrolState>();

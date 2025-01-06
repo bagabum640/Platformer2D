@@ -27,7 +27,7 @@ public class Player : MonoBehaviour
         _groundCheck = GetComponent<PlayerGroundDetector>();
         _combat = GetComponent<PlayerCombat>();
 
-        _health = new Health(_animator, _maxHealthAmount);
+        _health = new Health(_maxHealthAmount, _animator);
     }
 
     private void OnEnable()
@@ -50,30 +50,24 @@ public class Player : MonoBehaviour
         Jump();
     }
 
-    public void TakeDamage(int damage)
-    {
+    public void TakeDamage(int damage) =>
         _health.TakeDamage(damage);
-    }
 
-    public void RestoreHealth(int healthAmount)
-    {
+    public void RestoreHealth(int healthAmount) =>
         _health.RestoreHealth(healthAmount);
-    }
 
-    public bool GetPossibleOfHealing()
-    {
-        return _health.GetPossibleOfHealing();
-    }
+    public bool GetPossibleOfHealing() =>
+         _health.GetPossibleOfHealing();
 
     private void Attack()
     {
-        if(_input.GetIsAttack() && _groundCheck.IsOnGround)
+        if (_input.GetIsAttack() && _groundCheck.IsOnGround)
             _combat.TryToAttack();
     }
 
     private void JumpDown()
     {
-        if(_input.GetIsJumpDown() && _groundCheck.IsOnGround)
+        if (_input.GetIsJumpDown() && _groundCheck.IsOnGround)
             _movement.JumpDown();
     }
 
@@ -84,10 +78,10 @@ public class Player : MonoBehaviour
     }
 
     private void Die()
-    {       
+    {
         _boxCollider.enabled = false;
         _rigidbody.isKinematic = true;
         _rigidbody.velocity = Vector3.zero;
-        this.enabled = false;       
+        this.enabled = false;
     }
 }

@@ -16,7 +16,7 @@ public class PatrolState : EnemyState
         PathInit(_enemyMover.GetPointsPosition());
     }
 
-    public override void UpdatePhysicState()
+    public override void PhysicUpdate()
     {
         if (Enemy.IsAggroed)        
             StateChanger.SetState<ChaseState>();

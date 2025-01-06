@@ -7,8 +7,6 @@ public class AggroDetector : MonoBehaviour
     [SerializeField] private LayerMask _playerLayerMask;
     [SerializeField] private float _delay = 0.2f;
 
-    private readonly bool _isWork = true;
-
     public event Action<Transform> TargetFound;
     public event Action TargetLost;
 
@@ -22,7 +20,7 @@ public class AggroDetector : MonoBehaviour
         WaitForSeconds waitForSeconds = new(_delay);
         Collider2D hitCollider;
 
-        while (_isWork)
+        while (enabled)
         {
             hitCollider = Physics2D.OverlapBox(transform.position, transform.localScale, angleBox, _playerLayerMask);
 

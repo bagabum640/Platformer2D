@@ -373,10 +373,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 425c10b2baef39a4a93ac71878f2a01a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _aggroDetector: {fileID: 73898520495208766}
   _maxHealth: 10
+  _aggroDetector: {fileID: 73898520495208766}
   _boxCollider: {fileID: 7373321109607327760}
   _rigidbody: {fileID: 35349228829270126}
+  _healthBar: {fileID: 0}
 --- !u!114 &7654914183424997200
 MonoBehaviour:
   m_ObjectHideFlags: 0

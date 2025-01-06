@@ -16,10 +16,10 @@ public class EnemyStateMachine : IStateChanger
     }
 
     public void Update() =>
-        _currentEnemyState.UpdateState();
+        _currentEnemyState.Update();
 
     public void FixedUpdate() =>
-        _currentEnemyState.UpdatePhysicState();
+        _currentEnemyState.PhysicUpdate();
 
     public void SetState<TState>() where TState : EnemyState
     {

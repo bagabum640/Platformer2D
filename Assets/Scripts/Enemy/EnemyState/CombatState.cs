@@ -14,7 +14,7 @@ public class CombatState : EnemyState
         _enemyMovement = enemyMovement;
     }
 
-    public override void UpdateState()
+    public override void Update()
     {
         if (Enemy.IsAggroed && Mathf.Abs(Enemy.GetTargetPosition().x - Enemy.transform.position.x) > _enemyAttack.AttackRange && _enemyMovement.CanMove)
             StateChanger.SetState<ChaseState>();

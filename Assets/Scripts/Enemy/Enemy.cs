@@ -1,7 +1,6 @@
 using UnityEngine;
-using static AnimationsData;
 
-[RequireComponent(typeof(EnemyMover),                  
+[RequireComponent(typeof(EnemyMover),
                   typeof(Animator),
                   typeof(EnemyAttacker))]
 [RequireComponent(typeof(BoxCollider2D),
@@ -19,7 +18,7 @@ public class Enemy : MonoBehaviour
     private EnemyMover _enemyMovement;
     private EnemyStateMachine _stateMachine;
     private Health _health;
-    
+
     public bool IsAggroed { get; private set; }
 
     private void Awake()
@@ -28,7 +27,7 @@ public class Enemy : MonoBehaviour
         _enemyMovement = GetComponent<EnemyMover>();
         _enemyAttack = GetComponent<EnemyAttacker>();
 
-        _health = new Health(_animator, _maxHealth);
+        _health = new Health(_maxHealth, _animator);
         _stateMachine = new EnemyStateMachine(this, _animator, _enemyMovement, _enemyAttack);
         _stateMachine.SetState<PatrolState>();
     }
@@ -49,8 +48,8 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
-        if (_health.IsAlive)       
-            _stateMachine.Update();                   
+        if (_health.IsAlive)
+            _stateMachine.Update();
     }
 
     private void FixedUpdate()
@@ -59,18 +58,16 @@ public class Enemy : MonoBehaviour
             _stateMachine.FixedUpdate();
     }
 
-    public void TakeDamage(int damage)
-    {
+    public void TakeDamage(int damage) =>
         _health.TakeDamage(damage);
-    }
 
     public Vector3 GetTargetPosition()
     {
-        if (_target != null)       
+        if (_target != null)
             return _target.position;
-        
+
         return Vector3.zero;
-    }  
+    }
 
     private void SetTarget(Transform target)
     {
@@ -82,7 +79,7 @@ public class Enemy : MonoBehaviour
     {
         _target = null;
         IsAggroed = false;
-    }     
+    }
 
     private void Die()
     {
