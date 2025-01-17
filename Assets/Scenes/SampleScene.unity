@@ -27837,8 +27837,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b57e7efa4a3a2d45a47d8b03ef8e346, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 6
-  _jumpForce: 6
 --- !u!70 &1674823424
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -27891,11 +27889,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c70013b5834215458eb6ca5df356411, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _groundCheckPoint: {fileID: 1485162455}
+  _groundDetector: {fileID: 0}
   _groundLayerMask:
     serializedVersion: 2
     m_Bits: 8
-  _groundCheckRadius: 0.03
 --- !u!1 &1965760404
 GameObject:
   m_ObjectHideFlags: 0
@@ -28243,7 +28240,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70d695e3c5c657c48bb938d1b94f1271, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _coin: {fileID: 3324582460984514682, guid: 806832a8091a18a43a57d87dbf83a8ec, type: 3}
+  _spawnPoints: []
+  _coinPrefab: {fileID: 0}
 --- !u!4 &2058109473
 Transform:
   m_ObjectHideFlags: 0

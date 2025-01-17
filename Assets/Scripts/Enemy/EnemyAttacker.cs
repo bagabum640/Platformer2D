@@ -17,7 +17,7 @@ public class EnemyAttacker : MonoBehaviour
     public void ResetTimerAttack() =>
         _attackDelay = 0;
 
-    private void Attack()  //Called via Event in Animation
+    private void Attack()  // Called via Event in Animation
     {
         Collider2D[] hitPlayer = Physics2D.OverlapCircleAll(_weaponPoint.transform.position, AttackRange);
 

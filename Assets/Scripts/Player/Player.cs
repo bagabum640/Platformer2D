@@ -1,4 +1,5 @@
 using UnityEngine;
+using static AnimationsData;
 
 [RequireComponent(typeof(PlayerGroundDetector),
                   typeof(PlayerMover),
@@ -6,9 +7,10 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerCombat),
                   typeof(BoxCollider2D),
                   typeof(Rigidbody2D))]
+[RequireComponent(typeof(Health),
+                  typeof(Animator))]
 public class Player : MonoBehaviour
-{
-    [SerializeField] private int _maxHealthAmount = 10;
+{ 
     [SerializeField] private Rigidbody2D _rigidbody;
     [SerializeField] private BoxCollider2D _boxCollider;
 
@@ -22,12 +24,11 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         _animator = GetComponent<Animator>();
-        _input = GetComponent<PlayerInputReader>();
-        _movement = GetComponent<PlayerMover>();
         _groundCheck = GetComponent<PlayerGroundDetector>();
+        _movement = GetComponent<PlayerMover>();
         _combat = GetComponent<PlayerCombat>();
-
-        _health = new Health(_maxHealthAmount, _animator);
+        _input = GetComponent<PlayerInputReader>();
+        _health = GetComponent<Health>();
     }
 
     private void OnEnable()
@@ -50,8 +51,11 @@ public class Player : MonoBehaviour
         Jump();
     }
 
-    public void TakeDamage(int damage) =>
+    public void TakeDamage(int damage)
+    {
         _health.TakeDamage(damage);
+        _animator.SetTrigger(Hurt);
+    }
 
     public void RestoreHealth(int healthAmount) =>
         _health.RestoreHealth(healthAmount);
@@ -79,6 +83,7 @@ public class Player : MonoBehaviour
 
     private void Die()
     {
+        _animator.SetTrigger(Death);
         _boxCollider.enabled = false;
         _rigidbody.isKinematic = true;
         _rigidbody.velocity = Vector3.zero;

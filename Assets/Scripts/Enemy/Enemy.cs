@@ -1,4 +1,5 @@
 using UnityEngine;
+using static AnimationsData;
 
 [RequireComponent(typeof(EnemyMover),
                   typeof(Animator),
@@ -14,8 +15,8 @@ public class Enemy : MonoBehaviour
 
     private Transform _target;
     private Animator _animator;
-    private EnemyAttacker _enemyAttack;
     private EnemyMover _enemyMovement;
+    private EnemyAttacker _enemyAttack;
     private EnemyStateMachine _stateMachine;
     private Health _health;
 
@@ -26,8 +27,8 @@ public class Enemy : MonoBehaviour
         _animator = GetComponent<Animator>();
         _enemyMovement = GetComponent<EnemyMover>();
         _enemyAttack = GetComponent<EnemyAttacker>();
+        _health = GetComponent<Health>();
 
-        _health = new Health(_maxHealth, _animator);
         _stateMachine = new EnemyStateMachine(this, _animator, _enemyMovement, _enemyAttack);
         _stateMachine.SetState<PatrolState>();
     }
@@ -58,8 +59,11 @@ public class Enemy : MonoBehaviour
             _stateMachine.FixedUpdate();
     }
 
-    public void TakeDamage(int damage) =>
+    public void TakeDamage(int damage)
+    {
+        _animator.SetTrigger(Hurt);
         _health.TakeDamage(damage);
+    }
 
     public Vector3 GetTargetPosition()
     {
@@ -83,6 +87,7 @@ public class Enemy : MonoBehaviour
 
     private void Die()
     {
+        _animator.SetTrigger(Death);
         _boxCollider.enabled = false;
         _rigidbody.isKinematic = true;
         _rigidbody.velocity = Vector3.zero;

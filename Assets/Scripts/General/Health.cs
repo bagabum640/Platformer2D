@@ -1,60 +1,51 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class Health
+public class Health : MonoBehaviour
 {
-    private readonly List<IHealthObserver> _observers = new();
-    private readonly int _maxAmount;
-    private readonly int _minAmount = 0;
+    private const int MinAmount = 0;
 
-    private int _currentAmount;
-
+    [field: SerializeField] public int MaxAmount { get; private set; } = 10;
+    [field: SerializeField] public int CurrentAmount { get; private set; }
     public bool IsAlive { get; private set; } = true;
+
+    public event Action ValueChanged;
 
     public event Action Died;
 
-    public Health(int maxHealthAmount, Animator animator)
+    private void Awake()
     {
-        _maxAmount = maxHealthAmount;
-        _currentAmount = _maxAmount;
+        CurrentAmount = MaxAmount;
+    }
 
-        AddObserver(new HealthAnimationController(animator));
+    private void Start()
+    {
+        ValueChanged?.Invoke();
     }
 
     public void TakeDamage(int damage)
     {
         if (damage >= 0)
         {
-            _currentAmount = Mathf.Clamp(_currentAmount - damage, _minAmount, _maxAmount);
+            CurrentAmount = Mathf.Clamp(CurrentAmount - damage, MinAmount, MaxAmount);
         }
 
-        if (_currentAmount <= 0)
+        if (CurrentAmount <= 0)
         {
             IsAlive = false;
             Died?.Invoke();
         }
 
-        NotifyObservers();
+        ValueChanged?.Invoke();
     }
 
-    public void RestoreHealth(int healthAmount) =>
-       _currentAmount = Mathf.Clamp(_currentAmount + Mathf.Abs(healthAmount), _minAmount, _maxAmount);
+    public void RestoreHealth(int healthAmount)
+    {
+        CurrentAmount = Mathf.Clamp(CurrentAmount + Mathf.Abs(healthAmount), MinAmount, MaxAmount);
+
+        ValueChanged?.Invoke();
+    }
 
     public bool GetPossibleOfHealing() =>
-        _currentAmount < _maxAmount;
-
-    public void AddObserver(IHealthObserver observer) =>
-        _observers.Add(observer);
-
-    public void RemoveObserver(IHealthObserver observer) =>
-        _observers.Remove(observer);
-
-    private void NotifyObservers()
-    {
-        foreach (var observer in _observers)
-        {
-            observer.OnHealthChanged(_currentAmount);
-        }
-    }
+        CurrentAmount < MaxAmount;
 }
