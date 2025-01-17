@@ -1,11 +1,5 @@
 using UnityEngine;
 
-public class CoinSpawner : ItemSpawner
+public class CoinSpawner : ItemSpawner<Coin>
 {
-    [SerializeField] private Coin _coinPrefab;
-
-    private void Awake()
-    {
-        ItemPrefab = _coinPrefab;
-    }
 }

@@ -22,4 +22,10 @@ public class PlayerAnimations : MonoBehaviour
 
     public void AttackAnimation() =>
         _playerAnimator.SetTrigger(Attack);
+
+    public void HurtAnimation() =>
+        _playerAnimator.SetTrigger(Hurt);
+
+    public void DeathAnimation() =>
+        _playerAnimator.SetTrigger(Death);
 }

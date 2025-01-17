@@ -3,17 +3,20 @@ using UnityEngine.UI;
 
 public class HealthSliderBar : HealthBar
 {
-    [SerializeField] private Vector3 _offset;
     [SerializeField] protected Slider Slider;
+    [SerializeField] private Vector3 _offset;
+
+    private Camera _mainCamera;
 
     private void Awake()
     {
-        Slider.maxValue = Health.MaxAmount;       
+        Slider.maxValue = Health.MaxAmount;      
+        _mainCamera = Camera.main;
     }
 
     private void FixedUpdate()
     {
-        Slider.transform.position = Camera.main.WorldToScreenPoint(transform.parent.position + _offset);
+        Slider.transform.position = _mainCamera.WorldToScreenPoint(transform.parent.position + _offset);
     }
 
     public override void UpdateHealthAmount()

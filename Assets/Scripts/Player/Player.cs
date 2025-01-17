@@ -13,8 +13,8 @@ public class Player : MonoBehaviour
 { 
     [SerializeField] private Rigidbody2D _rigidbody;
     [SerializeField] private BoxCollider2D _boxCollider;
+    [SerializeField] private PlayerAnimations _playerAnimation;
 
-    private Animator _animator;
     private PlayerGroundDetector _groundCheck;
     private PlayerMover _movement;
     private PlayerCombat _combat;
@@ -23,7 +23,6 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
-        _animator = GetComponent<Animator>();
         _groundCheck = GetComponent<PlayerGroundDetector>();
         _movement = GetComponent<PlayerMover>();
         _combat = GetComponent<PlayerCombat>();
@@ -54,11 +53,11 @@ public class Player : MonoBehaviour
     public void TakeDamage(int damage)
     {
         _health.TakeDamage(damage);
-        _animator.SetTrigger(Hurt);
+        _playerAnimation.HurtAnimation();
     }
 
     public void RestoreHealth(int healthAmount) =>
-        _health.RestoreHealth(healthAmount);
+        _health.Restore(healthAmount);
 
     public bool GetPossibleOfHealing() =>
          _health.GetPossibleOfHealing();
@@ -83,7 +82,7 @@ public class Player : MonoBehaviour
 
     private void Die()
     {
-        _animator.SetTrigger(Death);
+        _playerAnimation.DeathAnimation();
         _boxCollider.enabled = false;
         _rigidbody.isKinematic = true;
         _rigidbody.velocity = Vector3.zero;

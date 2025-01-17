@@ -39,9 +39,9 @@ public class Health : MonoBehaviour
         ValueChanged?.Invoke();
     }
 
-    public void RestoreHealth(int healthAmount)
+    public void Restore(int amount)
     {
-        CurrentAmount = Mathf.Clamp(CurrentAmount + Mathf.Abs(healthAmount), MinAmount, MaxAmount);
+        CurrentAmount = Mathf.Clamp(CurrentAmount + Mathf.Abs(amount), MinAmount, MaxAmount);
 
         ValueChanged?.Invoke();
     }

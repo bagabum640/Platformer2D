@@ -15,12 +15,12 @@ public class SmoothHealthSliderBar : HealthSliderBar
 
         if (Health.IsAlive != true)
         {
-            this.Slider.gameObject.SetActive(false);
+            Slider.gameObject.SetActive(false);
         }
         else
         {
             _coroutine = StartCoroutine(SmoothFill());
-            this.Slider.gameObject.SetActive(true);
+            Slider.gameObject.SetActive(true);
         }     
     }
 
