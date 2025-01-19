@@ -9,7 +9,7 @@ public class PlayerGroundDetector : MonoBehaviour
 
     private void Awake()
     {
-        if (_groundDetector.TryGetComponent<CircleCollider2D>(out CircleCollider2D collider))
+        if (_groundDetector.TryGetComponent(out CircleCollider2D collider))
             _groundDetectorRadius = collider.radius;
     }
 

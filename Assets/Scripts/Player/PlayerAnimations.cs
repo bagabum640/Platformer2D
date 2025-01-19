@@ -20,8 +20,8 @@ public class PlayerAnimations : MonoBehaviour
     public void FallAnimation(float velocity) =>
         _playerAnimator.SetFloat(_falling, velocity);
 
-    public void AttackAnimation() =>
-        _playerAnimator.SetTrigger(Attack);
+    public void AttackAnimation(float currentAttack) =>
+        _playerAnimator.SetTrigger(Attack + currentAttack.ToString("0"));     
 
     public void HurtAnimation() =>
         _playerAnimator.SetTrigger(Hurt);

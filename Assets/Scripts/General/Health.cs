@@ -3,15 +3,14 @@ using UnityEngine;
 
 public class Health : MonoBehaviour
 {
-    private const int MinAmount = 0;
-
-    [field: SerializeField] public int MaxAmount { get; private set; } = 10;
-    [field: SerializeField] public int CurrentAmount { get; private set; }
-    public bool IsAlive { get; private set; } = true;
+    private const float MinAmount = 0;
 
     public event Action ValueChanged;
-
     public event Action Died;
+
+    [field: SerializeField] public float MaxAmount { get; private set; } = 10;
+    [field: SerializeField] public float CurrentAmount { get; private set; }
+    public bool IsAlive { get; private set; } = true;
 
     private void Awake()
     {
@@ -23,7 +22,7 @@ public class Health : MonoBehaviour
         ValueChanged?.Invoke();
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
         if (damage >= 0)
         {
@@ -39,7 +38,7 @@ public class Health : MonoBehaviour
         ValueChanged?.Invoke();
     }
 
-    public void Restore(int amount)
+    public void Restore(float amount)
     {
         CurrentAmount = Mathf.Clamp(CurrentAmount + Mathf.Abs(amount), MinAmount, MaxAmount);
 

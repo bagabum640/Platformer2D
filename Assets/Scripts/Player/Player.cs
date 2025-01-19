@@ -19,6 +19,7 @@ public class Player : MonoBehaviour
     private PlayerMover _movement;
     private PlayerCombat _combat;
     private PlayerInputReader _input;
+    private Vampirism _vampirism;
     private Health _health;
 
     private void Awake()
@@ -27,6 +28,7 @@ public class Player : MonoBehaviour
         _movement = GetComponent<PlayerMover>();
         _combat = GetComponent<PlayerCombat>();
         _input = GetComponent<PlayerInputReader>();
+        _vampirism = GetComponent<Vampirism>();
         _health = GetComponent<Health>();
     }
 
@@ -50,13 +52,13 @@ public class Player : MonoBehaviour
         Jump();
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
         _health.TakeDamage(damage);
         _playerAnimation.HurtAnimation();
     }
 
-    public void RestoreHealth(int healthAmount) =>
+    public void RestoreHealth(float healthAmount) =>
         _health.Restore(healthAmount);
 
     public bool GetPossibleOfHealing() =>
@@ -86,6 +88,7 @@ public class Player : MonoBehaviour
         _boxCollider.enabled = false;
         _rigidbody.isKinematic = true;
         _rigidbody.velocity = Vector3.zero;
+        _vampirism.enabled = false;
         this.enabled = false;
     }
 }

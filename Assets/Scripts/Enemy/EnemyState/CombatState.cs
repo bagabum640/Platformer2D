@@ -24,9 +24,9 @@ public class CombatState : EnemyState
         
         if (_enemyAttack.CanAttack)
         {            
-            _enemyAttack.ResetTimerAttack();
             _enemyMovement.ProhibitMove();
             _animator.SetTrigger(Attack);         
+            _enemyAttack.ResetTimerAttack();
         }        
     }
 }

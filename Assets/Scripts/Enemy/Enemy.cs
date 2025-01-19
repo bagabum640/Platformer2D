@@ -8,7 +8,6 @@ using static AnimationsData;
                   typeof(Rigidbody2D))]
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] private int _maxHealth = 10;
     [SerializeField] private AggroDetector _aggroDetector;
     [SerializeField] private BoxCollider2D _boxCollider;
     [SerializeField] private Rigidbody2D _rigidbody;
@@ -59,10 +58,19 @@ public class Enemy : MonoBehaviour
             _stateMachine.FixedUpdate();
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage,DamageType damageType)
     {
-        _animator.SetTrigger(Hurt);
-        _health.TakeDamage(damage);
+        switch (damageType)
+        {
+            case DamageType.Weapon:
+                _animator.SetTrigger(Hurt);
+                _health.TakeDamage(damage);
+                break;
+
+            case DamageType.Ability:
+                _health.TakeDamage(damage);
+                break;
+        }
     }
 
     public Vector3 GetTargetPosition()

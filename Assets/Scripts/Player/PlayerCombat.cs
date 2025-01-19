@@ -1,15 +1,22 @@
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerAnimations))]
 public class PlayerCombat : MonoBehaviour
 {
     [SerializeField] private Transform _attackPoint;
+    [SerializeField] private DamageType _damageType;
     [SerializeField] private int _damage;
     [SerializeField] private float _attackRange;
     [SerializeField] private float _attackDelay;
+    [SerializeField] private float _attackResetTime;
+
+    private readonly float _startIndexAttack = 1;
+    private readonly float _maxCountAttack = 3;
 
     private PlayerAnimations _playerAnimations;
 
+    private float _currentIndexAttack;
     private float _timer;
 
     private void Awake() =>   
@@ -22,9 +29,16 @@ public class PlayerCombat : MonoBehaviour
     {
         if (_timer >= _attackDelay)
         {
-            _timer = 0;
+            _currentIndexAttack++;
 
-            _playerAnimations.AttackAnimation();
+            if (_currentIndexAttack > _maxCountAttack || _timer > _attackResetTime)
+            {
+                _currentIndexAttack = _startIndexAttack;
+            }
+
+            _playerAnimations.AttackAnimation(_currentIndexAttack);
+
+            _timer = 0;
         }
     }
 
@@ -34,7 +48,7 @@ public class PlayerCombat : MonoBehaviour
 
         foreach (Collider2D hit in hitEnemies)
             if (hit.TryGetComponent(out Enemy enemy))
-                enemy.TakeDamage(_damage);
+                enemy.TakeDamage(_damage, _damageType);
     }
 
     private void OnDrawGizmosSelected() =>
