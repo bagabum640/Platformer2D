@@ -50,6 +50,7 @@ public class Player : MonoBehaviour
         Attack();
         JumpDown();
         Jump();
+        Vampirism();
     }
 
     public void TakeDamage(float damage)
@@ -80,6 +81,12 @@ public class Player : MonoBehaviour
     {
         if (_input.GetIsJump() && _groundCheck.IsOnGround)
             _movement.Jump();
+    }
+
+    private void Vampirism()
+    {
+        if (_input.GetIsActivatedVampirism())
+            _vampirism.Active();
     }
 
     private void Die()

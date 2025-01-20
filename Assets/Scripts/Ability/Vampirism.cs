@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class Vampirism : MonoBehaviour
 {
-    private const KeyCode vampirismKey = KeyCode.E; 
-
+    [SerializeField] private VampirismDetector _vampirismDetector;
     [SerializeField] private Player _player;
-    [SerializeField] private Transform _vampirismPoint;
     [SerializeField] private DamageType _damageType;
     [SerializeField] private float _damage = 1;
+    [SerializeField] private float _multiplierHeal = 0.5f;
     [SerializeField] private float _duration = 6;
     [SerializeField] private float _detectorRadius;
 
+    private WaitForSeconds _cooldownTime;
     private bool _isActive = false;
 
     public event Action Activated;
@@ -22,43 +22,62 @@ public class Vampirism : MonoBehaviour
 
     private void Awake()
     {
-        _vampirismPoint.gameObject.SetActive(false);
+        _cooldownTime = new(Cooldown);
+        _vampirismDetector.gameObject.SetActive(false);
     }
 
-    private void Update()
+    public void Active()
     {
-        if (Input.GetKeyDown(vampirismKey))
+        if (_isActive == false)
+            StartCoroutine(SpellEffect(_duration));
+    }
+
+    public Enemy GetEnemy()
+    {
+        Enemy target = null;
+        float shortestDistance = float.MaxValue;
+
+        foreach(Enemy enemy in _vampirismDetector.EnemyDetected)
         {
-            if (_isActive == false)
-                StartCoroutine(SpellEffect(_duration));
+            if(enemy == null)
+                continue;
+
+            float distance = Mathf.Abs(enemy.transform.position.x - transform.position.x);
+
+            if(distance < shortestDistance)
+            {
+                shortestDistance = distance;
+                target = enemy;
+            }
         }
+
+        return target;
     }
 
     private IEnumerator SpellEffect(float actionTime)
     {
-        float healAmount = (_damage / 2) * Time.deltaTime;
+        float transfusionAmount = _damage * Time.deltaTime;
 
         Activated?.Invoke();
         _isActive = true;
-        _vampirismPoint.gameObject.SetActive(true);
+        _vampirismDetector.gameObject.SetActive(true);
 
         while (actionTime > 0)
         {
-            Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(_vampirismPoint.position, _detectorRadius);
+            Enemy enemy = GetEnemy();
 
-            foreach (Collider2D hit in hitEnemies)            
-                if (hit.TryGetComponent(out Enemy enemy))
-                {
-                    enemy.TakeDamage(_damage * Time.deltaTime, _damageType);
-                    _player.RestoreHealth(healAmount);
-                }         
+            if ((enemy != null))
+            {
+                enemy.TakeDamage(transfusionAmount, _damageType);
+                _player.RestoreHealth(transfusionAmount * _multiplierHeal);
+            }          
 
             actionTime -= Time.deltaTime;
 
             yield return null;
         }
 
-        _vampirismPoint.gameObject.SetActive(false);
+        _vampirismDetector.gameObject.SetActive(false);
 
         StartCoroutine(Reload());
     }
@@ -67,7 +86,7 @@ public class Vampirism : MonoBehaviour
     {
         Reloading?.Invoke();
 
-        yield return new WaitForSeconds(Cooldown);
+        yield return _cooldownTime;
 
         _isActive = false;
     }

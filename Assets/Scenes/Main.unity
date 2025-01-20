@@ -62596,7 +62596,15 @@ PrefabInstance:
       objectReference: {fileID: 1546742555844590380}
     - target: {fileID: 6251898416032167822, guid: db4197d3bf21aa944b9a16f09f2027a5, type: 3}
       propertyPath: <MaxAmount>k__BackingField
-      value: 1000
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8613472982567289057, guid: db4197d3bf21aa944b9a16f09f2027a5, type: 3}
+      propertyPath: _attackDelay
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8613472982567289057, guid: db4197d3bf21aa944b9a16f09f2027a5, type: 3}
+      propertyPath: _attackResetTime
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 8747025624465233432, guid: db4197d3bf21aa944b9a16f09f2027a5, type: 3}
       propertyPath: m_LocalPosition.x
